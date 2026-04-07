@@ -18,8 +18,9 @@ public class TrainConsistApp {
         // 3. Attempt to attach a duplicate bogie
         trainFormation.add("Sleeper");  // This will be ignored
 
-        // 4. Display final formation preserving insertion order
-        System.out.println("Train Formation in Insertion Order: " + trainFormation);
+
+        trainConsist.add(2, "Pantry Car");
+        System.out.println("After adding Pantry Car at position 2: " + trainConsist);
 
         System.out.println("UC5 operations completed successfully...");
     }
