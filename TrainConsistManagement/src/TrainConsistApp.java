@@ -1,143 +1,42 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
-// Base Bogie class
-abstract class Bogie {
-    private String type;
-
-    public Bogie(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return type;
-    }
-}
-
-// Passenger Bogie subclasses
-class SleeperBogie extends Bogie {
-    private int seatCapacity;
-
-    public SleeperBogie(int seatCapacity) {
-        super("Sleeper");
-        this.seatCapacity = seatCapacity;
-    }
-
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + " [Seats: " + seatCapacity + "]";
-    }
-}
-
-class ACChairBogie extends Bogie {
-    private int seatCapacity;
-
-    public ACChairBogie(int seatCapacity) {
-        super("AC Chair");
-        this.seatCapacity = seatCapacity;
-    }
-
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + " [Seats: " + seatCapacity + "]";
-    }
-}
-
-class FirstClassBogie extends Bogie {
-    private int seatCapacity;
-
-    public FirstClassBogie(int seatCapacity) {
-        super("First Class");
-        this.seatCapacity = seatCapacity;
-    }
-
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + " [Seats: " + seatCapacity + "]";
-    }
-}
-
-// Goods Bogie subclasses
-class RectangularGoodsBogie extends Bogie {
-    private String cargoType;
-
-    public RectangularGoodsBogie(String cargoType) {
-        super("Rectangular Goods");
-        this.cargoType = cargoType;
-    }
-
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + " [Cargo: " + cargoType + "]";
-    }
-}
-
-class CylindricalGoodsBogie extends Bogie {
-    private String cargoType;
-
-    public CylindricalGoodsBogie(String cargoType) {
-        super("Cylindrical Goods");
-        this.cargoType = cargoType;
-    }
-
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    @Override
-    public String toString() {
-        return getType() + " [Cargo: " + cargoType + "]";
-    }
-}
-
-// Main App
 public class TrainConsistApp {
 
     public static void main(String[] args) {
-        // 1. Create a list of bogies
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new SleeperBogie(50));
-        bogies.add(new ACChairBogie(60));
-        bogies.add(new FirstClassBogie(30));
-        bogies.add(new SleeperBogie(55));
-        bogies.add(new RectangularGoodsBogie("Coal"));
-        bogies.add(new CylindricalGoodsBogie("Oil"));
-        bogies.add(new RectangularGoodsBogie("Grain"));
+        Scanner scanner = new Scanner(System.in);
 
-        // 2. Group bogies by type using Stream API and Collectors.groupingBy
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getType));
+        // 1. Define regex patterns
+        String trainIdPattern = "TRN-\\d{4}";       // Format: TRN-1234
+        String cargoCodePattern = "PET-[A-Z]{2}";    // Format: PET-AB
 
-        // 3. Display the grouped result
-        System.out.println("=== Grouped Bogies by Type ===");
-        groupedBogies.forEach((type, bogieList) -> {
-            System.out.println(type + ":");
-            bogieList.forEach(bogie -> System.out.println("  " + bogie));
-        });
+        Pattern trainPattern = Pattern.compile(trainIdPattern);
+        Pattern cargoPattern = Pattern.compile(cargoCodePattern);
 
-        // Original list remains unchanged
-        System.out.println("\n=== Original Bogie List ===");
-        bogies.forEach(System.out::println);
+        // 2. User input
+        System.out.print("Enter Train ID (Format: TRN-1234): ");
+        String trainIdInput = scanner.nextLine();
+
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCodeInput = scanner.nextLine();
+
+        // 3. Validate Train ID
+        Matcher trainMatcher = trainPattern.matcher(trainIdInput);
+        if (trainMatcher.matches()) {
+            System.out.println("Train ID is valid.");
+        } else {
+            System.out.println("Invalid Train ID format!");
+        }
+
+        // 4. Validate Cargo Code
+        Matcher cargoMatcher = cargoPattern.matcher(cargoCodeInput);
+        if (cargoMatcher.matches()) {
+            System.out.println("Cargo Code is valid.");
+        } else {
+            System.out.println("Invalid Cargo Code format!");
+        }
+
+        scanner.close();
     }
 }
