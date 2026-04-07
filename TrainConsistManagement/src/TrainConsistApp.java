@@ -18,7 +18,7 @@ public class TrainConsistApp {
 
         System.out.println("Initial Train Consist: " + trainConsist);
 
-        // 3. Insert Pantry Car at position 2 (indexing starts at 0)
+
         trainConsist.add(2, "Pantry Car");
         System.out.println("After adding Pantry Car at position 2: " + trainConsist);
 
